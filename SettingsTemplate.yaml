@@ -3,5 +3,5 @@ body:
     attributes:
       name: api_key
       label: Tenor API key
-      description: "The Tenor API key to use for the flow"
+      description: "You can get an API key by going to https://developers.google.com/tenor/guides/quickstart"
       defaultValue: ""
