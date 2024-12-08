@@ -30,11 +30,11 @@ jobs:
         run: |
           npm install
           npm run build
-          zip -r TimezoneConversion-${{steps.version.outputs.prop}}.zip . -x '*.git*'
+          zip -r Tenor-${{steps.version.outputs.prop}}.zip . -x '*.git*'
       - name: Publish
         uses: softprops/action-gh-release@v1
         with:
-          files: "TimezoneConversion-${{steps.version.outputs.prop}}.zip"
+          files: "Tenor-${{steps.version.outputs.prop}}.zip"
           tag_name: "v${{steps.version.outputs.prop}}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
