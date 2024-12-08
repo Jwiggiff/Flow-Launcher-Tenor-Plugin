@@ -20,6 +20,13 @@ flow.on("query", (params) => {
 
 	const [query] = z.array(z.string()).parse(params);
 
+	flow.showResult({
+		title: `https://tenor.googleapis.com/v2/search?q=${query}&key=${api_key}&client_key=flow_tenor_plugin&limit=10`,
+		subtitle: api_key,
+	});
+
+	return;
+
 	getResults(query, api_key).then((results) => {
 		results.forEach((result, i) => {
 			flow.showResult({
@@ -34,9 +41,6 @@ flow.on("query", (params) => {
 });
 
 async function getResults(query: string, api_key: string): Promise<TenorResult[]> {
-	console.log(
-		`https://tenor.googleapis.com/v2/search?q=${query}&key=${api_key}&client_key=flow_tenor_plugin&limit=10`
-	);
 	const response = await fetch(
 		`https://tenor.googleapis.com/v2/search?q=${query}&key=${api_key}&client_key=flow_tenor_plugin&limit=10`
 	);
