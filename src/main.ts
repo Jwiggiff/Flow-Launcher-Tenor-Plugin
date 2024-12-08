@@ -22,14 +22,18 @@ flow.on("query", (params) => {
 	const [query] = z.array(z.string()).parse(params);
 
 	getResults(query, api_key).then((results) => {
+		logger.info(`Found ${results.length} results`);
+		logger.info(JSON.stringify(results, null, 2));
 		results.forEach((result, i) => {
-			flow.showResult({
+			const obj = {
 				title: result.title,
 				subtitle: result.content_description,
-				method: "copy_result",
+				method: "copy_result" as const,
 				parameters: [result.title],
 				score: results.length - i,
-			});
+			};
+			logger.info(`Sending object: ${JSON.stringify(obj, null, 2)}`);
+			flow.showResult(obj);
 		});
 	});
 });
