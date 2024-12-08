@@ -1,0 +1,7 @@
+body:
+  - type: input
+    attributes:
+      name: api_key
+      label: Tenor API key
+      description: "You can get an API key by going to https://developers.google.com/tenor/guides/quickstart"
+      defaultValue: ""
