@@ -37,8 +37,12 @@ async function getResults(query: string, api_key: string): Promise<TenorResult[]
 	const response = await fetch(
 		`https://tenor.googleapis.com/v2/search?q=${query}&key=${api_key}&client_key=flow_tenor_plugin&limit=10`
 	);
+	if (!response.ok) {
+		throw new Error(`Failed to fetch results: ${response.statusText}`);
+	}
 	const data = await response.json();
-	return data.results;
+	console.log(data);
+	return data.results as TenorResult[];
 }
 
 const copyToClipboard = (text: string) => childProcess.spawn("clip").stdin?.end(text);
