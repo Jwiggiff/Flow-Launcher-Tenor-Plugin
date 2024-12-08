@@ -1,6 +1,7 @@
 import childProcess from "child_process";
 import { z } from "zod";
 import { Flow, JSONRPCResponse } from "./lib/flow";
+import logger from "./lib/logger";
 
 // The events are the custom events that you define in the flow.on() method.
 const events = ["copy_result"] as const;
@@ -20,17 +21,6 @@ flow.on("query", (params) => {
 
 	const [query] = z.array(z.string()).parse(params);
 
-	const url = `https://tenor.googleapis.com/v2/search?q=${query}&key=${api_key}&client_key=flow_tenor_plugin&limit=10`;
-
-	flow.showResult({
-		title: url,
-		subtitle: api_key,
-		method: "copy_result",
-		parameters: [url],
-	});
-
-	return;
-
 	getResults(query, api_key).then((results) => {
 		results.forEach((result, i) => {
 			flow.showResult({
@@ -45,6 +35,10 @@ flow.on("query", (params) => {
 });
 
 async function getResults(query: string, api_key: string): Promise<TenorResult[]> {
+	logger.info(`Searching for ${query}`);
+	logger.info(
+		`url: https://tenor.googleapis.com/v2/search?q=${query}&key=${api_key}&client_key=flow_tenor_plugin&limit=10`
+	);
 	const response = await fetch(
 		`https://tenor.googleapis.com/v2/search?q=${query}&key=${api_key}&client_key=flow_tenor_plugin&limit=10`
 	);
