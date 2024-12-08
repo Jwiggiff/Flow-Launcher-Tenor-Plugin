@@ -22,22 +22,39 @@ flow.on("query", async (params) => {
 
 	const [query] = z.array(z.string()).parse(params);
 
-	const results = await getResults(query, api_key);
-	logger.info(`Found ${results.length} results`);
-	logger.info(JSON.stringify(results, null, 2));
+	try {
+		// const results = await getResults(query, api_key);
+		// logger.info(`Found ${results.length} results`);
+		// logger.info(JSON.stringify(results, null, 2));
 
-	const resultsToSend: JSONRPCResponse<Events>[] = [];
-	results.forEach((result, i) => {
-		resultsToSend.push({
-			title: result.title,
-			subtitle: result.content_description,
-			method: "copy_result" as const,
-			params: [result.url],
-			score: results.length - i,
-		});
-	});
+		// const resultsToSend: JSONRPCResponse<Events>[] = [];
+		// results.forEach((result, i) => {
+		// 	resultsToSend.push({
+		// 		title: result.title,
+		// 		subtitle: result.content_description,
+		// 		method: "copy_result" as const,
+		// 		params: [result.url],
+		// 		score: results.length - i,
+		// 	});
+		// });
 
-	flow.showResult(...resultsToSend);
+		const resultsToSend: JSONRPCResponse<Events>[] = [
+			{
+				title: "test",
+				subtitle: "test",
+				method: "copy_result" as const,
+				params: ["test"],
+			},
+		];
+
+		flow.showResult(...resultsToSend);
+	} catch (error) {
+		if (error instanceof Error)
+			return flow.showResult({
+				title: "Error",
+				subtitle: error.message,
+			});
+	}
 });
 
 async function getResults(query: string, api_key: string): Promise<TenorResult[]> {
