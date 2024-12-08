@@ -20,9 +20,13 @@ flow.on("query", (params) => {
 
 	const [query] = z.array(z.string()).parse(params);
 
+	const url = `https://tenor.googleapis.com/v2/search?q=${query}&key=${api_key}&client_key=flow_tenor_plugin&limit=10`;
+
 	flow.showResult({
-		title: `https://tenor.googleapis.com/v2/search?q=${query}&key=${api_key}&client_key=flow_tenor_plugin&limit=10`,
+		title: url,
 		subtitle: api_key,
+		method: "copy_result",
+		parameters: [url],
 	});
 
 	return;
