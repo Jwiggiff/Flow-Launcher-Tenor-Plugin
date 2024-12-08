@@ -1,0 +1,7 @@
+body:
+  - type: input
+    attributes:
+      name: api_key
+      label: Tenor API key
+      description: "The Tenor API key to use for the flow"
+      defaultValue: ""

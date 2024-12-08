@@ -1,0 +1,12 @@
+{
+	"ID": "22a114b1-aa5f-4bca-8763-03d58bc4029b",
+	"ActionKeyword": "tenor",
+	"Name": "Tenor",
+	"Description": "Searches Tenor for GIFs",
+	"Author": "Josh Friedman",
+	"Version": "1.0.0",
+	"Language": "TypeScript",
+	"ExecuteFileName": "./dist/main.js",
+	"Website": "https://github.com/Jwiggiff/Flow-Launcher-Tenor-Plugin",
+	"IcoPath": "./assets/icon.png"
+}
