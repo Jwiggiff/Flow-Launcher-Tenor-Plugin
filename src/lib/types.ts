@@ -30,7 +30,7 @@ interface MediaFormats {
 	webm: MediaFormat;
 }
 
-interface TenorResult {
+export interface TenorResult {
 	id: string;
 	title: string;
 	media_formats: MediaFormats;

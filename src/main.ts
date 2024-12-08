@@ -1,7 +1,8 @@
 import childProcess from "child_process";
 import { z } from "zod";
-import { Flow, JSONRPCResponse } from "./lib/flow";
+import { Flow, JSONRPCResponse } from "flow-launcher-helper";
 import logger from "./lib/logger";
+import { TenorResult } from "./lib/types";
 
 // The events are the custom events that you define in the flow.on() method.
 const events = ["copy_result"] as const;
@@ -9,7 +10,7 @@ type Events = (typeof events)[number];
 
 const flow = new Flow<Events>("assets/icon.png");
 
-flow.on("query", (params) => {
+flow.on("query", async (params) => {
 	const { api_key } = flow.settings;
 	if (!api_key) {
 		flow.showResult({
@@ -21,21 +22,22 @@ flow.on("query", (params) => {
 
 	const [query] = z.array(z.string()).parse(params);
 
-	getResults(query, api_key).then((results) => {
-		logger.info(`Found ${results.length} results`);
-		logger.info(JSON.stringify(results, null, 2));
-		results.forEach((result, i) => {
-			const obj = {
-				title: result.title,
-				subtitle: result.content_description,
-				method: "copy_result" as const,
-				parameters: [result.title],
-				score: results.length - i,
-			};
-			logger.info(`Sending object: ${JSON.stringify(obj, null, 2)}`);
-			flow.showResult(obj);
+	const results = await getResults(query, api_key);
+	logger.info(`Found ${results.length} results`);
+	logger.info(JSON.stringify(results, null, 2));
+
+	const resultsToSend: JSONRPCResponse<Events>[] = [];
+	results.forEach((result, i) => {
+		resultsToSend.push({
+			title: result.title,
+			subtitle: result.content_description,
+			method: "copy_result" as const,
+			params: [result.url],
+			score: results.length - i,
 		});
 	});
+
+	flow.showResult(...resultsToSend);
 });
 
 async function getResults(query: string, api_key: string): Promise<TenorResult[]> {
